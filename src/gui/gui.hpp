@@ -10,7 +10,6 @@ public:
 
 	auto Render( ) -> void;
 
-	ID3D11ShaderResourceView* m_Logo = nullptr;
 	ID3D11ShaderResourceView* m_Avatar = nullptr;
 	bool m_IsOpened = false;
 private:

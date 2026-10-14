@@ -32,10 +32,10 @@ LRESULT __stdcall WndProc( const HWND wnd, UINT msg, WPARAM param, LPARAM lparam
     if ( GetActiveWindow( ) == nullptr )
         return CallWindowProc( g_PresentHook->m_OriginalWndProc, wnd, msg, param, lparam );
 
-	if ( msg == WM_KEYDOWN )
+	if ( msg == WM_KEYDOWN && ( lparam & ( 1LL << 30 ) ) == 0 && g_KeyHandler )
 		g_KeyHandler->HandleKeyInput( param );
 
-    if ( ImGui_ImplWin32_WndProcHandler( wnd, msg, param, lparam ) && g_Gui->m_IsOpened )
+    if ( g_Gui->m_IsOpened && ImGui_ImplWin32_WndProcHandler( wnd, msg, param, lparam ) )
         return 1L;
 
     return CallWindowProc( g_PresentHook->m_OriginalWndProc, wnd, msg, param, lparam );
@@ -120,10 +120,9 @@ auto PresentHook::InitializeImGui( ) -> bool
 	io.Fonts->AddFontFromMemoryTTF( font_medium_bin, sizeof( font_medium_bin ), 17, &config );
 	io.Fonts->AddFontFromMemoryTTF( font_bold_bin, sizeof( font_bold_bin ), 17, &config );
 
-	D3DX11_IMAGE_LOAD_INFO info;
+	D3DX11_IMAGE_LOAD_INFO info { };
 	ID3DX11ThreadPump* pump { nullptr };
 
-	D3DX11CreateShaderResourceViewFromMemory( this->m_pDevice, logob, sizeof( logob ), &info, pump, &g_Gui->m_Logo, 0 );
 	D3DX11CreateShaderResourceViewFromMemory( this->m_pDevice, avatarb, sizeof( avatarb ), &info, pump, &g_Gui->m_Avatar, 0 );
 
     ui::add_page( 0, [ ] ( ) { } );

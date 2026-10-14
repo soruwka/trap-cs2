@@ -1,4 +1,5 @@
 #include "memory.hpp"
+#include <intrin.h>
 #include <codecvt>
 #include <sstream>
 

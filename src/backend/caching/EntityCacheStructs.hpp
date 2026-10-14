@@ -28,7 +28,7 @@ enum CBones : std::uint8_t {
     RIGHT_FEET = 27,
 };
 
-extern const std::vector<std::uint8_t> g_SkeletonBones = { 6, 5, 4, 2, 0, 8, 9, 10, 13, 14, 15, 22, 23, 24, 25, 26, 27 };
+inline const std::vector<std::uint8_t> g_SkeletonBones = { 6, 5, 4, 2, 0, 8, 9, 10, 13, 14, 15, 22, 23, 24, 25, 26, 27 };
 
 
 struct BoundingBox {

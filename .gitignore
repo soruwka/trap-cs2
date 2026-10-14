@@ -33,3 +33,8 @@
 
 x64
 .vs
+*.vcxproj.user
+*.pdb
+*.ilk
+*.tlog
+__pycache__/

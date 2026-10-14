@@ -1,5 +1,5 @@
 #include "startup.hpp"
-#include <engine/engine.hpp>
+#include <engine/Engine.hpp>
 #include <engine/CEntitiyListSystem.hpp>
 #include <engine/EngineClasses/CBaseEntity.hpp>
 #include <engine/EngineClasses/CEntityInstance.hpp>
@@ -17,7 +17,8 @@ auto Startup::AllocateConsole( ) -> void {
 	if ( !this->m_IsDebug ) return;
 
 	if ( AllocConsole( ) ) {
-		freopen_s( ( FILE** )stdout, "CONOUT$", "w", stdout );
+		FILE* consoleOutput = nullptr;
+		freopen_s( &consoleOutput, "CONOUT$", "w", stdout );
 		
 	}
 
@@ -25,19 +26,19 @@ auto Startup::AllocateConsole( ) -> void {
 
 auto Startup::IntializeCheatStart( ) -> void
 {
-	std::cout << "[+] Initializing Trap\n";
+	std::cout << "[+] Initializing Nocturne\n";
 
 	MH_Initialize( );
 
 	g_Engine = std::make_unique<Engine>( );
 	g_PresentHook = std::make_unique<PresentHook>( );
 
-	g_FeatureManager->AddFeature( new PlayerVisuals( ) );
+	g_FeatureManager->AddFeature( std::make_unique<PlayerVisuals>( ) );
 
-	while ( !GetAsyncKeyState( VK_END ) & 1 ) {
+	while ( ( GetAsyncKeyState( VK_END ) & 0x8000 ) == 0 ) {
 		std::this_thread::sleep_for( std::chrono::milliseconds( 10 ) );
 	}
-	std::cout << "[-] Unloading Trap...\n";
+	std::cout << "[-] Stopping Nocturne...\n";
 	MH_DisableHook( MH_ALL_HOOKS );
 	std::cout << "[-] Disabled all Hooks...\n";
 	MH_RemoveHook( MH_ALL_HOOKS );

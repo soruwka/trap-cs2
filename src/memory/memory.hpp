@@ -1,5 +1,6 @@
 #pragma once
 #include <includes.hpp>
+#include <string_view>
 
 
 class Memory

@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 
 #include <memory/hooking.hpp>
 #include <engine/EngineClasses/CEntityInstance.hpp>

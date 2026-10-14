@@ -9,9 +9,10 @@
 
 Gui::Gui( )
 {
-    std::function<void()> handleKeyInput = [ & ] ( ) {
-        this->m_IsOpened ^= 1;
-        ImGui::GetIO( ).MouseDrawCursor = this->m_IsOpened;
+    std::function<void()> handleKeyInput = [ this ] ( ) {
+        this->m_IsOpened = !this->m_IsOpened;
+        if ( ImGui::GetCurrentContext( ) )
+            ImGui::GetIO( ).MouseDrawCursor = this->m_IsOpened;
         };
 
     const auto& menuBind = Keybind( VK_INSERT, handleKeyInput );
@@ -24,12 +25,13 @@ auto Gui::Render( ) -> void
 		return;
 
     ImGui::SetNextWindowSize( ui::size );
-    ImGui::Begin( "weave", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground ); {
+    ImGui::Begin( "Nocturne", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground ); {
         ImGui::BeginChild( "nav", { 176, ImGui::GetWindowHeight( ) }, 0, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoScrollbar ); {
             ImGui::BeginChild( "brand", { ImGui::GetWindowWidth( ), 42 }, 0, ImGuiWindowFlags_NoBackground ); {
                 ImGui::GetWindowDrawList( )->AddRectFilled( ImGui::GetWindowPos( ), { ImGui::GetWindowPos( ).x + ImGui::GetWindowWidth( ), ImGui::GetWindowPos( ).y + ImGui::GetWindowHeight( ) - 2 }, ImGui::GetColorU32( ImGuiCol_ChildBg ), GImGui->Style.WindowRounding, ImDrawFlags_RoundCornersTop );
                 ImGui::GetWindowDrawList( )->AddRectFilled( { ImGui::GetWindowPos( ).x, ImGui::GetWindowPos( ).y + ImGui::GetWindowHeight( ) - 2 }, { ImGui::GetWindowPos( ).x + ImGui::GetWindowWidth( ), ImGui::GetWindowPos( ).y + ImGui::GetWindowHeight( ) }, ImGui::GetColorU32( ImGuiCol_Scheme ) );
-                ImGui::GetWindowDrawList( )->AddImage( this->m_Logo, { ImGui::GetWindowPos( ).x + ImGui::GetWindowWidth( ) / 2 - 31 / 2, ImGui::GetWindowPos( ).y + ImGui::GetWindowHeight( ) / 2 - 14 / 2 - 2 }, { ImGui::GetWindowPos( ).x + ImGui::GetWindowWidth( ) / 2 + 31 / 2, ImGui::GetWindowPos( ).y + ImGui::GetWindowHeight( ) / 2 + 14 / 2 - 2 }, { 0, 0 }, { 1, 1 }, ImColor( 1.f, 1.f, 1.f, GImGui->Style.Alpha ) );
+                const auto brandSize = font( 3 )->CalcTextSizeA( font( 3 )->FontSize, FLT_MAX, 0.f, "Nocturne" );
+                ImGui::GetWindowDrawList( )->AddText( font( 3 ), font( 3 )->FontSize, ImGui::GetWindowPos( ) + ( ImGui::GetWindowSize( ) - brandSize ) * 0.5f, ImGui::GetColorU32( ImGuiCol_Text ), "Nocturne" );
             }
             ImGui::EndChild( );
 

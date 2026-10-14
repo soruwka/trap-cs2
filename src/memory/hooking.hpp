@@ -8,7 +8,7 @@ class Hook {
 public:
 	Hook( ) { };
 	Hook( uintptr_t address, const char* name ) : m_FunctionAddress( address ), m_HookStatus( -1 ), m_OriginalFunction( NULL ), m_HookedFunctionName( name ) { };
-	~Hook( ) { delete this;	}
+	~Hook( ) = default;
 
 	[[nodiscard]]
 	auto EnableHook( void* detourFunction ) -> bool
@@ -37,5 +37,4 @@ private:
 	uintptr_t m_FunctionAddress = 0;
 	T m_OriginalFunction = NULL;
 };
-
 
