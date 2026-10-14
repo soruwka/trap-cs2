@@ -38,10 +38,10 @@ feature ownership without loading the DLL or running a game:
 python3 -m unittest discover -s tests -v
 ```
 
-The test runner needs Python 3 and a GCC/Clang-compatible C++17 compiler (`CXX`,
-or `c++` by default).
-It also validates the Visual Studio manifests and branding. These checks do not
-replace a native Windows build or runtime tests.
+The test runner needs Python 3 and GCC/Clang-compatible C17 and C++17 compilers
+(`CC` and `CXX`, or `cc` and `c++` by default). It checks the vendored FreeType
+public headers in both languages, the Visual Studio manifests, and branding.
+These checks do not replace a native Windows build or runtime tests.
 
 ## Known limitations
 

@@ -63,6 +63,30 @@ class CoreTests(unittest.TestCase):
                     input=f'#include <{header}>\n', text=True, check=True,
                 )
 
+    def test_freetype_headers_are_self_contained(self):
+        source = (
+            "#include <ft2build.h>\n"
+            "#include FT_FREETYPE_H\n"
+            "#include FT_MODULE_H\n"
+            "#include FT_GLYPH_H\n"
+            "#include FT_SYNTHESIS_H\n"
+        )
+        c_flags = ["-std=c17", "-Wall", "-Wextra", "-Werror", "-pedantic"]
+        c_flags += shlex.split(os.environ.get("CFLAGS", ""))
+        compilers = (
+            ("c", shlex.split(os.environ.get("CC", "cc")), c_flags),
+            ("c++", self.compiler, self.flags),
+        )
+        for language, compiler, flags in compilers:
+            with self.subTest(language=language):
+                subprocess.run(
+                    compiler + flags + [
+                        "-I", str(ROOT / "thirdparty/imgui/freetype/include"),
+                        "-x", language, "-fsyntax-only", "-",
+                    ],
+                    input=source, text=True, check=True,
+                )
+
 
 class ProjectTests(unittest.TestCase):
     def setUp(self):
